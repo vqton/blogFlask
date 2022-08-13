@@ -1,15 +1,23 @@
-from flask import render_template
+from flask import render_template, request
 from blog import app
+from blog.forms import LoginForm
 
 
 @app.route("/")
 @app.route("/index")
 def index():
     user = {"username": "Miguel"}
-    return render_template("index.html", title="Home", user=user)
+    return render_template(
+        "index.html",
+    )
 
 
-from flask import render_template
+@app.route("/login")
+def login():
+    # form = LoginForm()
+    form = LoginForm(request.form)
+
+    return render_template("login.html", title="Sign In", form=form)
 
 
 @app.errorhandler(404)
