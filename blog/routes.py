@@ -1,8 +1,7 @@
-from turtle import title
 from flask import render_template, request, url_for, redirect, flash
 from blog import app
 from blog import db
-from .models import User
+from blog.models import User
 from blog.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -12,7 +11,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 @login_required
 def index():
     # user = {"username": "Miguel"}
-    return render_template("index.html", title="Home", posts=posts)
+    return render_template("index.html", title="Home")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -22,7 +21,7 @@ def login():
         return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(user=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
             return redirect(url_for("login"))

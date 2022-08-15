@@ -1,5 +1,5 @@
 from . import db
-from . import login
+from blog import login
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -16,7 +16,6 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
