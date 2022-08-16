@@ -1,5 +1,5 @@
-from blog import app
-from . import db
+# from blog import app
+from blog import db
 from .models import User, Post
 
 
