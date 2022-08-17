@@ -3,7 +3,7 @@ from blog import app
 from blog import db
 from datetime import datetime
 from blog.models import User
-from blog.forms import LoginForm, RegistrationForm, EditProfileForm
+from blog.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm
 from flask_login import current_user, login_user, logout_user, login_required
 
 
@@ -83,5 +83,3 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template("edit_profile.html", title="Edit profile", form=form)
-
-    pass

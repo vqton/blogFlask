@@ -1,7 +1,7 @@
+from datetime import datetime, timedelta
 import unittest
-from datetime import datetime
 from blog import app, db
-from .models import User, Post
+from blog.models import User, Post
 
 
 class UserModelCase(unittest.TestCase):
@@ -20,7 +20,7 @@ class UserModelCase(unittest.TestCase):
         self.assertTrue(u.check_password("cat"))
 
     def test_avatar(self):
-        u = User(username="user1", email="vuquangton@outlook.com")
+        u = User(username="john", email="john@example.com")
         self.assertEqual(
             u.avatar(128),
             (
@@ -31,8 +31,8 @@ class UserModelCase(unittest.TestCase):
         )
 
     def test_follow(self):
-        u1 = User(username="user1", email="vuquangton@outlook.com")
-        u2 = User(username="user2", email="vuquangton@outlook.com")
+        u1 = User(username="john", email="john@example.com")
+        u2 = User(username="susan", email="susan@example.com")
         db.session.add(u1)
         db.session.add(u2)
         db.session.commit()
@@ -41,12 +41,11 @@ class UserModelCase(unittest.TestCase):
 
         u1.follow(u2)
         db.session.commit()
-
         self.assertTrue(u1.is_following(u2))
         self.assertEqual(u1.followed.count(), 1)
-        self.assertEqual(u1.followed.first().username, "user2")
+        self.assertEqual(u1.followed.first().username, "susan")
         self.assertEqual(u2.followers.count(), 1)
-        self.assertEqual(u2.followers.first().username, "user1")
+        self.assertEqual(u2.followers.first().username, "john")
 
         u1.unfollow(u2)
         db.session.commit()
@@ -56,10 +55,10 @@ class UserModelCase(unittest.TestCase):
 
     def test_follow_posts(self):
         # create four users
-        u1 = User(username="user1", email="vuquangton@outlook.com")
-        u2 = User(username="user2", email="vuquangton@outlook.com")
-        u3 = User(username="user3", email="vuquangton@outlook.com")
-        u4 = User(username="user4", email="vuquangton@outlook.com")
+        u1 = User(username="john", email="john@example.com")
+        u2 = User(username="susan", email="susan@example.com")
+        u3 = User(username="mary", email="mary@example.com")
+        u4 = User(username="david", email="david@example.com")
         db.session.add_all([u1, u2, u3, u4])
 
         # create four posts
