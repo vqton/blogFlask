@@ -22,3 +22,4 @@ class Config:
     MAIL_USERNAME = "vuquangton@gmail.com"
     MAIL_PASSWORD = "fc4ff69_gmail"
     ADMINS = ["vuquangton@outlook.com"]
+    POSTS_PER_PAGE = 3
