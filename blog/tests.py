@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import unittest
 from blog import app, db
 from blog.models import User, Post
