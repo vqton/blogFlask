@@ -1,6 +1,7 @@
 from flask_wtf import Form, FlaskForm
 from blog.models import User, Post
-
+from blog import mail
+from flask_mail import Message
 from wtforms import (
     BooleanField,
     PasswordField,
@@ -64,3 +65,18 @@ class PostForm(FlaskForm):
         "Say something", validators=[DataRequired(), Length(min=1, max=140)]
     )
     submit = SubmitField("Submit")
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Request Password Reset")
+    pass
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField("Password", validators=[DataRequired()])
+    password2 = PasswordField(
+        "Repeat Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Request Password Reset")
+    pass
