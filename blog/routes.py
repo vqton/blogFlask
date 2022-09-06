@@ -1,4 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash
+from langdetect import detect, LangDetectException
 from blog import app
 from blog import db
 from datetime import datetime
@@ -14,6 +15,7 @@ from blog.forms import (
 )
 from blog.email import send_password_reset_email
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_babel import _
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -22,10 +24,14 @@ from flask_login import current_user, login_user, logout_user, login_required
 def index():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        try:
+            language = detect(form.post.data)
+        except LangDetectException:
+            language = ""
+        post = Post(body=form.post.data, author=current_user, language=language)
         db.session.add(post)
         db.session.commit()
-        flash("Your post is now live!")
+        flash(_("Your post is now live!"))
         return redirect(url_for("index"))
     # posts = [
     #     {"author": {"username": "John"}, "body": "Beautiful day in Portland!"},
